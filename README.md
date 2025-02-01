@@ -1,70 +1,117 @@
-# Getting Started with Create React App
+# Flight Booking App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a simple flight booking application built with React and Redux. The app allows users to book flights by selecting the departure location, destination, journey date, number of guests, and class. The bookings are managed using Redux for state management.
 
-## Available Scripts
+## Features
+- Add a flight booking with details including destination, date, number of guests, and class.
+- Display a list of booked flights.
+- Remove a booking from the list.
+- Limit the number of bookings to a maximum of 3.
 
-In the project directory, you can run:
+## Technologies Used
+- React.js
+- Redux
+- Tailwind CSS
 
-### `npm start`
+## Project Structure
+```
+.
+├── src
+│   ├── components
+│   │   ├── BookingForm.js
+│   │   ├── BookingTable.js
+│   ├── redux
+│   │   ├── actions.js
+│   │   ├── bookingReducer.js
+│   │   ├── store.js
+│   ├── App.js
+│   ├── index.js
+├── public
+│   ├── img
+│   │   ├── flight_logo.png
+│   │   ├── icons
+│   │   │   ├── Frame.svg
+│   │   │   ├── Vector (1).svg
+│   │   │   ├── Vector (3).svg
+│   ├── index.html
+├── package.json
+├── README.md
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation & Setup
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/hafiz229/flight-booking
+   ```
+2. Navigate into the project directory:
+   ```sh
+   cd flight-booking-app
+   ```
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
+4. Start the development server:
+   ```sh
+   npm start
+   ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Components
+### `BookingForm.js`
+- Handles flight booking form submission.
+- Uses React state to manage form inputs.
+- Dispatches the `addBooking` action to store the booking details.
+- Limits the booking count to a maximum of 3.
 
-### `npm test`
+### `BookingTable.js`
+- Displays the list of booked flights.
+- Fetches data from Redux store.
+- Allows users to remove a booking using the `removeBooking` action.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Redux State Management
+### `actions.js`
+Defines action types and action creators for adding and removing bookings.
+```js
+export const ADD_BOOKING = 'ADD_BOOKING';
+export const REMOVE_BOOKING = 'REMOVE_BOOKING';
+export const addBooking = (booking) => ({ type: ADD_BOOKING, payload: booking });
+export const removeBooking = (index) => ({ type: REMOVE_BOOKING, payload: index });
+```
 
-### `npm run build`
+### `bookingReducer.js`
+Handles the Redux state updates based on the dispatched actions.
+```js
+const initialState = { bookings: [] };
+const bookingReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ADD_BOOKING:
+      return { ...state, bookings: [...state.bookings, action.payload] };
+    case REMOVE_BOOKING:
+      return { ...state, bookings: state.bookings.filter((_, index) => index !== action.payload) };
+    default:
+      return state;
+  }
+};
+export default bookingReducer;
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `store.js`
+Creates a Redux store with the `bookingReducer`.
+```js
+import { createStore } from "redux";
+import bookingReducer from "./bookingReducer";
+const store = createStore(bookingReducer);
+export default store;
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Running the Project
+Once the development server starts, open `http://localhost:3000` in your browser to see the application.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Future Enhancements
+- Add validation and error handling.
+- Implement a backend API for storing booking data.
+- Add user authentication.
 
-### `npm run eject`
+## License
+This project is open-source and available under the [MIT License](LICENSE).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
